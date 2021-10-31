@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 import Layout from "@components/layout";
 import { API_URL } from "@config/index";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,6 +9,7 @@ import moment from "moment";
 
 import "react-toastify/dist/ReactToastify.css";
 import styles from "@styles/form.module.css";
+import { FaImage } from "react-icons/fa";
 
 export default function EditEventPage({ evt }) {
   const [values, setValues] = useState({
@@ -19,6 +21,10 @@ export default function EditEventPage({ evt }) {
     time: evt.time,
     description: evt.description,
   });
+
+  const [imagePreview, setImagePreview] = useState(
+    evt.image ? evt.image.formats.thumbnail.url : null
+  );
 
   const router = useRouter();
 
@@ -59,6 +65,29 @@ export default function EditEventPage({ evt }) {
         <a>{"<"} Go Back</a>
       </Link>
       <h1>Edit Event</h1>
+
+      <h2>Event Image</h2>
+      {imagePreview ? (
+        <div style={{ marginBottom: "3rem" }}>
+          <Image
+            alt="Event Image Preview"
+            src={imagePreview}
+            height={100}
+            width={170}
+          />
+          <div>
+            <button
+              className="btn-secondary"
+              style={{ marginLeft: 0, marginTop: ".5rem" }}>
+              <FaImage /> Set image
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p>No image uploaded</p>
+        </div>
+      )}
 
       <ToastContainer />
 
