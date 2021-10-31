@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "@components/layout";
 import Modal from "@components/modal";
+import ImageUpload from "@components/image-upload";
 import { API_URL } from "@config/index";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
@@ -61,6 +62,13 @@ export default function EditEventPage({ evt }) {
     setValues({ ...values, [name]: value });
   };
 
+  const imageUploaded = async e => {
+    const res = await fetch(`${API_URL}/events/${evt.id}`);
+    const data = await res.json();
+    setImagePreview(data.image.formats.thumbnail.url);
+    setShowModal(false);
+  };
+
   return (
     <Layout title="Add New Event">
       <Link href="/events">
@@ -70,27 +78,28 @@ export default function EditEventPage({ evt }) {
 
       <h2>Event Image</h2>
       {imagePreview ? (
-        <div style={{ marginBottom: "3rem" }}>
+        <div>
           <Image
             alt="Event Image Preview"
             src={imagePreview}
             height={100}
             width={170}
           />
-          <div>
-            <button
-              onClick={() => setShowModal(true)}
-              className="btn-secondary btn-icon"
-              style={{ marginLeft: 0, marginTop: ".5rem" }}>
-              <FaImage /> Set image
-            </button>
-          </div>
         </div>
       ) : (
         <div>
           <p>No image uploaded</p>
         </div>
       )}
+
+      <div style={{ marginBottom: "3rem" }}>
+        <button
+          onClick={() => setShowModal(true)}
+          className="btn-secondary btn-icon"
+          style={{ marginLeft: 0, marginTop: ".5rem" }}>
+          <FaImage /> Set image
+        </button>
+      </div>
 
       <ToastContainer />
 
@@ -172,7 +181,7 @@ export default function EditEventPage({ evt }) {
       </form>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        IMAGE UPLOAD
+        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );
