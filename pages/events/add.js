@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import "react-toastify/dist/ReactToastify.css";
 import Layout from "@components/layout";
 import { API_URL } from "@config/index";
-
-import styles from "@styles/form.module.css";
 import { toast, ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+import styles from "@styles/form.module.css";
 
 export default function AddEventPage() {
   const [values, setValues] = useState({
