@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
+import AuthContext from "@context/auth-context";
 import Layout from "@components/layout";
 import { FaUser } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,6 +14,8 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const { register, error } = useContext(AuthContext);
+
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -21,7 +24,7 @@ export default function RegisterPage() {
       return;
     }
 
-    console.log({ email, password });
+    register({ username, email, password });
   };
 
   return (
@@ -74,7 +77,7 @@ export default function RegisterPage() {
             />
           </div>
 
-          <input type="submit" value="Login" className="btn" />
+          <input type="submit" value="Sign Up" className="btn" />
         </form>
 
         <p>
