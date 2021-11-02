@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import Link from "next/link";
 import AuthContext from "@context/auth-context";
 import Layout from "@components/layout";
@@ -11,10 +11,14 @@ import styles from "@styles/auth-form.module.css";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const emailInputRef = useRef(null);
 
   const { login, error } = useContext(AuthContext);
 
-  useEffect(() => error && toast.error(error));
+  useEffect(() => {
+    error && toast.error(error);
+    emailInputRef.current.focus();
+  }, [error]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -32,12 +36,15 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email" autoFocus>
+              Email Address
+            </label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              ref={emailInputRef}
             />
           </div>
 
