@@ -4,7 +4,7 @@ import Spinner from "./spinner";
 
 import styles from "@styles/form.module.css";
 
-export default function ImageUpload({ evtId, imageUploaded }) {
+export default function ImageUpload({ evtId, imageUploaded, token }) {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +22,9 @@ export default function ImageUpload({ evtId, imageUploaded }) {
 
     const res = await fetch(`${API_URL}/upload`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
